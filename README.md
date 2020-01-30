@@ -1,4 +1,11 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Packages used
+npm install --save '@material-ui/core'
+npm install --save 'react-router-dom'
+npm install --save 'jwt-decode'
+npm install --save redux
+npm install --save react-redux
+npm install --save redux-thunk (middleware for running async code dispatcher)
+
 
 ## Available Scripts
 
