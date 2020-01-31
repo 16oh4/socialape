@@ -5,6 +5,7 @@ npm install --save 'jwt-decode'
 npm install --save redux
 npm install --save react-redux
 npm install --save redux-thunk (middleware for running async code dispatcher)
+npm install --save @material-ui/icons
 
 
 ## Available Scripts

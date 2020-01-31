@@ -2,8 +2,14 @@ import React, { Component } from 'react'
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types'; //method for type checking to minimize errors in application
 import donkeyIcon from '../images/icon.png';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+
+// REDUX
+import { connect } from 'react-redux';
+import { signupUser } from '../redux/actions/userActions';
+
+// DATA VALIDATION
+import { validateSignupData } from '../include/validators';
 
 //MUI
 import Grid from '@material-ui/core/Grid';
@@ -11,33 +17,6 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-// const styles = {
-//     form: {
-//       textAlign: 'center'
-//     },
-//     image: {
-//         margin: '0px auto 0px auto'
-//     },
-//     pageTitle: {
-//         margin: '0px auto 10px auto'
-//     },
-//     textField: {
-//         margin: '10px auto 10px'
-//     },
-//     button: {
-//         marginTop: 35,
-//         position: 'relative',
-//     },
-//     customError: {
-//         color: 'red',
-//         fontSize: '0.8rem',  //relative to font-size of root (entire page)
-//         marginTop: 10,
-//     },
-//     progress: {
-//         position: 'absolute'
-//     },
-// };
 
 const styles = (theme) => ({
     ...theme.styles //CANNOT CONTAIN PALETTE INFORMATION
@@ -52,16 +31,22 @@ class Signup extends Component {
             password: '',
             confirmPassword: '',
             handle: '',
-            loading: false, //for spinner
             errors: {},
+        }
+    }
+
+    //whenever the UI REDUCER sets errors, add them to the state
+    componentWillReceiveProps(newProps) {
+        if(newProps.UI.errors) {
+            this.setState({
+                errors: newProps.UI.errors
+            });
         }
     }
     
     handleSubmit = (event) => {
         event.preventDefault(); //so that signup info is not displayed in address bar
-        this.setState({
-            loading: true
-        });
+
         const newUserData ={
             email: this.state.email,
             password: this.state.password,
@@ -69,30 +54,12 @@ class Signup extends Component {
             handle: this.state.handle,
         }
 
-        axios.post('/signup', newUserData)
-        .then(res => {
-
-            console.log(res.data);
-
-            //store within user's browser
-            //FBIdToken is an arbitrary name, this is a key-value pair
-
-            localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
-
-            this.setState({ //stop spinner from showing
-                loading: false
-            })
-
-            //Send user to homepage on successful signup
-            this.props.history.push('/'); //from React Router DOM
-        })
-        .catch(err => {
-            console.log(JSON.stringify(err));
-            this.setState({
-                errors: err.response.data,
-                loading: false
-            });
-        });
+        //pass in this.props.history that came from <Route> component
+        //so that I can redirect the user!!
+        const validation = validateSignupData(newUserData);
+        if(validation.valid)
+            this.props.signupUser(newUserData, this.props.history);
+        else this.setState({errors: validation.errors});
     }
     handleChange = (event) => {
         this.setState({
@@ -101,8 +68,9 @@ class Signup extends Component {
     }
 
     render() {
-        const { classes } = this.props;
-        const { errors, loading } = this.state;
+        //destructure loading object from UI
+        const { classes, UI: { loading } } = this.props;
+        const { errors } = this.state;
         
         return (
             <Grid container className={classes.form}>
@@ -194,7 +162,23 @@ class Signup extends Component {
 
 //check to make sure the classes prop is an object!, ONLY WORKS IN DEVELOPMENT MODE
 Signup.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
+    UI: PropTypes.object.isRequired,
+    signupUser: PropTypes.func.isRequired
 }
 
-export default withStyles(styles)(Signup);
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+        UI: state.UI
+    }
+};
+
+//the function in the userActions.js file will be mapped to this.props.signupUser()!
+const mapActionsToProps = {
+    signupUser
+};
+
+// mapDispatchToProps == mapActionsToProps
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Signup));

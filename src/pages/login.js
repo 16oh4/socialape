@@ -3,9 +3,13 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types'; //method for type checking to minimize errors in application
 import donkeyIcon from '../images/icon.png';
 import { Link } from 'react-router-dom';
+
 //Redux
 import { connect } from 'react-redux';
 import { loginUser } from '../redux/actions/userActions'
+
+// DATA VALIDATION
+import { validateLoginData } from '../include/validators';
 
 //MUI
 import Grid from '@material-ui/core/Grid';
@@ -13,8 +17,6 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-
 
 const styles = (theme) => ({
     ...theme.styles //cannot CONTAIN PALETTE INFORMATION
@@ -74,7 +76,10 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password
         };
-        this.props.loginUser(userData, this.props.history); //pass Route history
+        const validate = validateLoginData(userData);
+        if(validate.valid)
+            this.props.loginUser(userData, this.props.history); //pass Route history
+        else this.setState({errors: validate.errors});
     }
 
     handleChange = (event) => {
@@ -122,6 +127,7 @@ class Login extends Component {
                         onChange={this.handleChange}
                         fullWidth/>
 
+                        {/**errors.general is an error sent by backend on the loginUser route */}
                         {errors.general && (
                             <Typography variant="body2" className={classes.customError}>
                                 {errors.general}
