@@ -1,4 +1,12 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED } from '../types';
+import { 
+    SET_USER, 
+    SET_ERRORS, 
+    CLEAR_ERRORS, 
+    LOADING_UI, 
+    SET_UNAUTHENTICATED, 
+    LOADING_USER,
+} from '../types';
+
 import axios from 'axios';
 
 //dispatch is used for asynchronous code
@@ -57,12 +65,23 @@ export const logoutUser = () => (dispatch) => {
 
 
 export const getUserData = () => (dispatch) => {
+    dispatch( {type: LOADING_USER }); //to have the loading property set to true for spinner!
+    
     axios.get('/user')
     .then(res => {
         dispatch({
             type: SET_USER,
             payload: res.data //data for dispatch to work with
         })
+    })
+    .catch(err => console.error(err));
+}
+
+export const uploadImage = (formData) => (dispatch) => {
+    dispatch({type: LOADING_USER}); //to have loading property set to true for the spinner
+    axios.post('/user/image', formData) //upload image to server
+    .then(() => {
+        dispatch(getUserData()); //after uploading image, let's fetch the results from the server
     })
     .catch(err => console.error(err));
 }

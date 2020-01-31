@@ -1,8 +1,9 @@
-import { SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED } from '../types';
+import { SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED, LOADING_USER } from '../types';
 
 const initialState = {
     authenticated: false,
     credentials: {},
+    loading: false, //for loading user content
     likes: [],
     notifications: []
 };
@@ -21,8 +22,14 @@ export default function(state = initialState, action) {
                 authenticated: true,
                 //getting credentials, likes, and notifications
                 //The spread will self bind credentitals: credentials, likes: likes, etc
-                ...action.payload 
+                ...action.payload,
+                loading: false //because we're setting up the profile already 
             };
+        case LOADING_USER:
+            return {
+                ...state,
+                loading: true
+            }
         default:
             return state;
     }
