@@ -17,6 +17,10 @@ body {
   margin:auto;
 }
 
+.nav-container svg{
+  color:#fff
+}
+
 /*Styling the anchor tag so that it is not blue and not underlined*/
 a{
   text-decoration: none;

@@ -69,6 +69,7 @@ export const getUserData = () => (dispatch) => {
     
     axios.get('/user')
     .then(res => {
+        console.log(res);
         dispatch({
             type: SET_USER,
             payload: res.data //data for dispatch to work with
@@ -82,6 +83,16 @@ export const uploadImage = (formData) => (dispatch) => {
     axios.post('/user/image', formData) //upload image to server
     .then(() => {
         dispatch(getUserData()); //after uploading image, let's fetch the results from the server
+    })
+    .catch(err => console.error(err));
+}
+
+//sends request to backend to edit user details
+export const editUserDetails = (userDetails) => (dispatch) => {
+    dispatch({type: LOADING_USER}); 
+    axios.post('/user', userDetails)
+    .then(() => {
+        dispatch(getUserData()); //updates the user data in the sidebar once it's fetched from the server
     })
     .catch(err => console.error(err));
 }

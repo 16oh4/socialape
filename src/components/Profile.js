@@ -1,27 +1,29 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import dayjs from 'dayjs';
+import React, { Component, Fragment } from    'react';
+import PropTypes from           'prop-types';
+import { Link } from            'react-router-dom';
+import dayjs from               'dayjs';
+
+import EditDetails from './EditDetails';
+import IconButtonWrap from '../include/IconButtonWrap';
 
 // Redux
-import { connect } from 'react-redux';
+import { connect } from         'react-redux';
 import { logoutUser, uploadImage } from '../redux/actions/userActions';
 
 // MUI Elements
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import MuiLink from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
-import Tooltip from '@material-ui/core/Tooltip';
-import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
+import { withStyles } from  '@material-ui/core/styles';
+import Button from          '@material-ui/core/Button';
+import MuiLink from         '@material-ui/core/Link';
+import Typography from      '@material-ui/core/Typography';
+import Paper from           '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // MUI Icons
-import LocationOn from '@material-ui/icons/LocationOn';
-import LinkIcon from '@material-ui/icons/Link';
-import CalendarToday from '@material-ui/icons/CalendarToday';
+import LocationOn from      '@material-ui/icons/LocationOn';
+import EditIcon from        '@material-ui/icons/Edit';
+import LinkIcon from        '@material-ui/icons/Link';
+import CalendarToday from   '@material-ui/icons/CalendarToday';
+import KeyboardReturn from  '@material-ui/icons/KeyboardReturn';
 
 const styles = (theme) => ({
     paper: {
@@ -53,6 +55,11 @@ const styles = (theme) => ({
                 color: theme.palette.primary.main
             }
         },
+        // '& .profile-icons': {
+        //     textAlign: 'left',
+            
+
+        // },
         '& hr': {
             border: 'none',
             margin: '0 0 10px 0'
@@ -107,92 +114,116 @@ class Profile extends Component {
             }
         } = this.props;
 
+        const profileImageMarkup = (
+            <div className="image-wrapper">
+                <img 
+                    className="profile-image" 
+                    src={imageUrl} 
+                    alt="profile_image"
+                />
+
+                {/*Onchange triggered when file selected*/}
+                <input 
+                    type="file" 
+                    id="imageInput" 
+                    hidden="hidden" 
+                    onChange={this.handleImageChange} 
+                /> 
+
+                {/*IconButton used to have the pencil icon to edit image */}
+                {/*Tooltip creates a popup description on child element when hovered */}
+                <IconButtonWrap 
+                    tip="Edit profile picture" 
+                    onClick={this.handleEditPicture}
+                    btnClassName="button" 
+                >
+                    <EditIcon color="primary"/>
+                </IconButtonWrap>
+
+            </div>
+        );
+
+        const profileDetailsMarkup = (
+            <div className="profile-details">
+                <MuiLink component={Link} to={`/users/${handle}`} color="primary" variant="h5">
+                    @{handle}
+                </MuiLink>
+
+                <hr/>
+
+                {bio && <Typography variant="body2">{bio}</Typography>}
+
+                <hr/>
+
+                {location && (
+                    <Fragment> {/*Fragment is a React component that wraps elements as one element */}
+                        <LocationOn color="primary"/> 
+                        <span>{location}</span>
+                        <hr/>
+                    </Fragment>
+                )}
+
+                {website && (
+                    <Fragment>
+                        <LinkIcon color="primary"/>
+                        {/*
+                        ->  target="_blank" makes it open in a new window. 
+                        ->  noopener is a security measure that makes sure the new link runs on a separate browser process. 
+                            It prevents access to window.opener property. Otherwise, the other website could change code 
+                            on mine!
+                        ->  noreferrer prevents the Referer header from being sent to the new page
+                        */}
+                        <a href={website} target="_blank" rel="noopener noreferrer">
+                            {' '}{website}
+                        </a>
+                        <hr/>
+                    </Fragment>
+                )}
+
+                <Fragment>
+                    <CalendarToday color="primary"/>{' '}
+                    <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
+                </Fragment>
+
+            </div>
+        )
+
+        const profileIconsMarkup = (
+            <>
+                {/*Icon for logging out */}
+                <IconButtonWrap 
+                    tip="Logout" 
+                    onClick={this.handleLogout}
+                    btnClassName="button" 
+                >
+                    <KeyboardReturn color="primary"/>
+                </IconButtonWrap>
+
+                {/*Icon for Editing details*/}
+                <EditDetails/>
+            </>
+        )
+
         let authMarkup = (
             <Paper className={classes.paper}>
                 <div className={classes.profile}>
 
                     {/*Profile image */}
-                    <div className="image-wrapper">
-                        <img 
-                            className="profile-image" 
-                            src={imageUrl} 
-                            alt="profile_image"
-                        />
+                    {profileImageMarkup}
 
-                        {/*Onchange triggered when file selected*/}
-                        <input 
-                            type="file" 
-                            id="imageInput" 
-                            hidden="hidden" 
-                            onChange={this.handleImageChange} 
-                        /> 
-
-                        {/*IconButton used to have the pencil icon to edit image */}
-                        {/*Tooltip creates a popup description on child element when hovered */}
-                        <Tooltip
-                            title="Edit profile picture"
-                            placement="right"
-                        >
-                            <IconButton 
-                                onClick={this.handleEditPicture} 
-                                className="button"
-                            >
-                                <EditIcon color="primary"/>
-                            </IconButton>
-                        </Tooltip>
-                    </div>
                     {/*Horizontal ruler to give space between. Since inside profile styled div, already styled on its own.
                     using property className="hr" would be redundant */}
                     <hr/>
 
                     {/*Profile text */}
-                    <div className="profile-details">
-                        <MuiLink component={Link} to={`/users/${handle}`} color="primary" variant="h5">
-                            @{handle}
-                        </MuiLink>
-
-                        <hr/>
-
-                        {bio && <Typography variant="body2">{bio}</Typography>}
-
-                        <hr/>
-
-                        {location && (
-                            <Fragment> {/*Fragment is a React component that wraps elements as one element */}
-                                <LocationOn color="primary"/> 
-                                <span>{location}</span>
-                            </Fragment>
-                        )}
-
-                        {website && (
-                            <Fragment>
-                                <LinkIcon color="primary"/>
-                                {/*
-                                ->  target="_blank" makes it open in a new window. 
-                                ->  noopener is a security measure that makes sure the new link runs on a separate browser process. 
-                                    It prevents access to window.opener property. Otherwise, the other website could change code 
-                                    on mine!
-                                ->  noreferrer prevents the Referer header from being sent to the new page
-                                */}
-                                <a href={website} target="_blank" rel="noopener noreferrer">
-                                    {' '}{website}
-                                </a>
-                            </Fragment>
-                        )}
-
-                        <CalendarToday color="primary"/>{' '}
-                        <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
-
-                    </div>
-
-                    {/*For logging out */}
-                    <Tooltip title="Logout" placement="top">
-                        <IconButton onClick={this.handleLogout}>
-                            <KeyboardReturn color="primary"/>
-                        </IconButton>
-                    </Tooltip>
+                    {profileDetailsMarkup}
+                    
+                    {profileIconsMarkup}
                 </div>
+
+                
             </Paper>
+            
         );
 
         let nonAuthMarkup = (
@@ -209,7 +240,11 @@ class Profile extends Component {
             </Paper>
         );
 
-        let profileMarkup = loading ? (<p>loading...</p>) : (authenticated ? authMarkup : nonAuthMarkup);
+        let loadingMarkup = loading && (
+            <CircularProgress size={50} className={classes.progress}/>
+        );
+
+        let profileMarkup = loading ? loadingMarkup : (authenticated ? authMarkup : nonAuthMarkup);
 
         return (
             profileMarkup
