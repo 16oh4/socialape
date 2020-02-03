@@ -60,13 +60,14 @@ class Login extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        //if UI errors are not undefined, then add them to the state
-        if(nextProps.UI.errors) { 
-            this.setState({
-                errors: nextProps.UI.errors
+    //whenever the UI REDUCER sets errors, add them to the state
+    static getDerivedStateFromProps(props, state) {
+        if(props.UI.errors) {
+            return ({
+                errors: props.UI.errors
             });
         }
+        else return null;
     }
     
     handleSubmit = (event) => {

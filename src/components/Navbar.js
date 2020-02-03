@@ -53,8 +53,6 @@ class Navbar extends Component {
         return (
             <AppBar>
                 <Toolbar className="nav-container">
-                    {console.log(auth)}
-                    {console.log('Hello world!')}
                     {auth ? authMarkup : nonAuthMarkup}
                 </Toolbar>
             </AppBar>

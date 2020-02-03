@@ -36,12 +36,13 @@ class Signup extends Component {
     }
 
     //whenever the UI REDUCER sets errors, add them to the state
-    componentWillReceiveProps(newProps) {
-        if(newProps.UI.errors) {
-            this.setState({
-                errors: newProps.UI.errors
+    static getDerivedStateFromProps(props, state) {
+        if(props.UI.errors) {
+            return ({
+                errors: props.UI.errors
             });
         }
+        else return null;
     }
     
     handleSubmit = (event) => {

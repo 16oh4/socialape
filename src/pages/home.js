@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
+
+import { connect } from 'react-redux';
+import { getScreams } from '../redux/actions/dataActions';
+
 import Grid from '@material-ui/core/Grid'
-import axios from 'axios';
 
 import Scream from '../components/Scream';
 import Profile from '../components/Profile';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 class Home extends Component {
     constructor(props) {
@@ -14,26 +20,19 @@ class Home extends Component {
         }
     }
     componentDidMount() {
-        axios.get('/screams')
-        .then(res => {
-           // console.log(res.data);
-
-            this.setState({
-                screams: res.data
-            });
-        })
-        .catch(err => {
-            console.error(err);
-        })
+        this.props.getScreams()
     }
     render() {
+        const { screams, loading } = this.props.data;
+
         //when using an object as a BOOLEAN, it will be true if it's not null
-        let recentScreamsMarkup = this.state.screams ? (
-            this.state.screams.map(scream => {
+        let recentScreamsMarkup = !loading ? (
+            screams.map(scream => {
                 return <Scream scream={scream} key={scream.id} raised="true"/>
             })
-        ) : (<p>Loading...</p>);
+        ) : (<CircularProgress size={250} />);
 
+        
 
         return (
             <Grid container spacing={10}>
@@ -48,4 +47,17 @@ class Home extends Component {
     }
 }
 
-export default Home
+Home.propTypes = {
+    getScreams: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+    data: state.data //gets the state from the dataReducer
+});
+
+const mapActionsToProps = {
+    getScreams
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(Home);
