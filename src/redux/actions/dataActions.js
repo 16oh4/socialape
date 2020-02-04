@@ -1,4 +1,10 @@
-import { SET_SCREAMS, LOADING_DATA, LIKE_SCREAM, UNLIKE_SCREAM } from '../types';
+import { 
+    SET_SCREAMS, 
+    LOADING_DATA, 
+    LIKE_SCREAM, 
+    UNLIKE_SCREAM,
+    DELETE_SCREAM,
+ } from '../types';
 import axios from 'axios';
 
 // get all screams
@@ -49,6 +55,17 @@ export const unlikeScream = (screamId) => (dispatch) => {
         // console.log(`Scream unliked: ${JSON.stringify(res.data)}`);
         // history.push('/');
         // window.location.href = '/';
+    })
+    .catch(err => {
+        console.error(err);
+    })
+}
+
+export const deleteScream = (screamId) => (dispatch) => {
+    axios.delete(`scream/${screamId}`)
+    .then(() => {
+        console.log('IN DATA ACTIONS DELETING SCREAM')
+        dispatch( { type: DELETE_SCREAM, payload: screamId } )
     })
     .catch(err => {
         console.error(err);

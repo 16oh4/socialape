@@ -4,7 +4,9 @@ import {Link} from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
+
 import IconButtonWrap from '../include/IconButtonWrap';
+import DeleteScream from './DeleteScream';
 
 // MUI IMPORT
 import Card from '@material-ui/core/Card';
@@ -26,6 +28,7 @@ const styles = {
     card: {
         display: 'flex',
         marginBottom: 20,
+        position: 'relative',
     },
 
     image: {
@@ -78,7 +81,7 @@ class Scream extends Component {
                userImage,
                userHandle,
                // eslint-disable-next-line
-               screamId,
+               id,
                 // eslint-disable-next-line
                likeCount,
                 // eslint-disable-next-line
@@ -113,7 +116,7 @@ class Scream extends Component {
        const likeButton = authenticated ? authLikeIcon : nonAuthLikeIcon;
 
        const deleteButton = authenticated && (userHandle === handle) ? (
-           <DeleteScream screamId={screamId} />
+           <DeleteScream screamId={id} />
        ) : null //null does not render anything
 
         return (

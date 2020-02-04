@@ -14,18 +14,30 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 class Home extends Component {
     constructor(props) {
         super(props);
-        console.log('CONSTRUCTOR');
         
         this.state = {
             screams: null
         }
     }
 
-    componentDidMount() {
+    componentDidMount() { //INITIAL FETCH
+        console.log('Calling componentDidMount')
         this.props.getScreams()
     }
+
+    componentDidUpdate(prevProps, prevState) { //SUBSEQUENT FETCHES
+        console.log('Calling componentDidUpdate')
+        if(prevProps.data.screams !== this.props.data.screams)
+        {
+            console.log('Screams changed!')
+            // this.props.getScreams()
+            this.setState({screams:this.props.data.screams}); //will force re-render
+        }
+    }
+    
     render() {
         const { screams, loading } = this.props.data;
+        console.log('In render() of home: ' + screams.length);
 
         //when using an object as a BOOLEAN, it will be true if it's not null
         let recentScreamsMarkup = !loading ? (
