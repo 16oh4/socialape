@@ -38,6 +38,8 @@ export default function(state = initialState, action) {
                 loading: true
             }
         case LIKE_SCREAM:
+            console.log('IN USER REDUCER FOR LIKE');
+
             return {
                 ...state,
                 likes: [
@@ -49,9 +51,11 @@ export default function(state = initialState, action) {
                 ]
             }
         case UNLIKE_SCREAM:
+            console.log('IN USER REDUCER FOR UNLIKE');
+
             return {
                 ...state,
-                likes: state.likes.filter(like => like.screamId === action.payload.screamId)
+                likes: state.likes.filter(like => like.screamId !== action.payload.screamId)
             }
         default:
             return state;

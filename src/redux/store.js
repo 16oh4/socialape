@@ -14,8 +14,9 @@ const middleware = [thunk];
 //that way for the human it's more readable in multiple files,
 //but for redux it's all in one big file
 const reducers = combineReducers({
-    user: userReducer,  //this is accessed by state.user in files with export 'connect'
     data: dataReducer,
+    user: userReducer,  //this is accessed by state.user in files with export 'connect'
+    
     UI: uiReducer
 });
 

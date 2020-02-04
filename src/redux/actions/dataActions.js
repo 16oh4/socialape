@@ -28,22 +28,27 @@ export const likeScream = (screamId) => (dispatch) => {
             type: LIKE_SCREAM, //this is the state PARAMETER in the reducer
             payload: res.data //this is the action PARAMETER in the reducer
         })
-        console.log(`Scream liked: ${res.data}`);
+        // console.log(`Scream liked: ${JSON.stringify(res.data)}`);
+        // history.push('/');
     })
     .catch(err => {
         console.error(err);
     })
+
+    
 }
 
 // Unlike a scream
 export const unlikeScream = (screamId) => (dispatch) => {
-    axios.get(`scream/${screamId}/like`)
+    axios.get(`scream/${screamId}/unlike`)
     .then(res => {
         dispatch({ //tell redux dispatcher to asses the new type of action and send the payload
             type: UNLIKE_SCREAM,
             payload: res.data
         })
-        console.log(`Scream unliked: ${res.data}`);
+        // console.log(`Scream unliked: ${JSON.stringify(res.data)}`);
+        // history.push('/');
+        // window.location.href = '/';
     })
     .catch(err => {
         console.error(err);

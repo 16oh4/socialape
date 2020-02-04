@@ -14,11 +14,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 class Home extends Component {
     constructor(props) {
         super(props);
-
+        console.log('CONSTRUCTOR');
+        
         this.state = {
             screams: null
         }
     }
+
     componentDidMount() {
         this.props.getScreams()
     }
@@ -28,7 +30,12 @@ class Home extends Component {
         //when using an object as a BOOLEAN, it will be true if it's not null
         let recentScreamsMarkup = !loading ? (
             screams.map(scream => {
-                return <Scream scream={scream} key={scream.id} raised="true"/>
+                // console.log('SHOWING SCREAM ' + scream.id);
+                return <Scream 
+                            scream={scream} 
+                            key={scream.id+(Math.round(Math.random()*10))} 
+                            raised="true"
+                        />
             })
         ) : (<CircularProgress size={250} />);
 
@@ -49,7 +56,7 @@ class Home extends Component {
 
 Home.propTypes = {
     getScreams: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({

@@ -19,15 +19,17 @@ export default (state=initialState, action) => {
                 screams: action.payload,
                 loading: false
             }
-        case UNLIKE_SCREAM: //fall-through
         case LIKE_SCREAM:
+        case UNLIKE_SCREAM:
+            console.log('IN DATA REDUCER FOR LIKE AND UNLIKE');
+            // console.log(`SCREAM ARRAY:\n${JSON.stringify(state.screams)}`)
             //the findIndex function 
-            let index = state.screams.findIndex( scream => (scream.screamId === action.payload.screamId));
-            if(index === (-1)) return state;
-            else {
-                state.screams[index] = action.payload; //update the scream with the updated scream document from backend
-                return state;
-            }
+            let index = state.screams.findIndex( scream => (scream.id === action.payload.screamId));
+            // console.log(index);
+            // console.log(`SCREAMS BEFORE: ${JSON.stringify(state.screams)}`);
+            state.screams[index].likeCount = action.payload.likeCount; //update the scream with the updated scream document from backend
+            // console.log(`SCREAMS AFTER: ${JSON.stringify(state.screams)}`);
+            return state;
         default:
             return state;
     }
