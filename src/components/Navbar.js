@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+
 import IconButtonWrap from '../include/IconButtonWrap';
+import PostScream from './PostScream';
 
 //MATERIAL UI
 import AppBar from '@material-ui/core/AppBar';
@@ -8,7 +10,6 @@ import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import AddIcon from '@material-ui/icons/Add';
 import HomeIcon from '@material-ui/icons/Home';
 import NotifIcon from '@material-ui/icons/Notifications';
 
@@ -34,16 +35,17 @@ class Navbar extends Component {
 
         const authMarkup = (
             <>
-                <IconButtonWrap tip="Post a scream!">
-                    <AddIcon/>                
-                </IconButtonWrap>
+                {/*Icon to post new scream with. Opens dialog to post new scream */}
+                <PostScream/>
                 
+                {/*Goes to home page*/}
                 <Link to="/">
                     <IconButtonWrap tip="Home">
                         <HomeIcon/>                
                     </IconButtonWrap>
                 </Link>
 
+                {/*Shows the notifications */}
                 <IconButtonWrap tip="Notifications">
                     <NotifIcon/>                
                 </IconButtonWrap>

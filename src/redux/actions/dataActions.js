@@ -1,11 +1,49 @@
 import { 
     SET_SCREAMS, 
-    LOADING_DATA, 
+    SET_SCREAM,
+    POST_SCREAM,
     LIKE_SCREAM, 
     UNLIKE_SCREAM,
     DELETE_SCREAM,
+
+    LOADING_DATA,
+    LOADING_UI,
+    STOP_LOADING_UI,
+
+    SET_ERRORS,
+    CLEAR_ERRORS,
+    
+    SUBMITTED,
+    CLEAR_SUBMIT
  } from '../types';
+ 
 import axios from 'axios';
+
+export const postScream = (newScream) => (dispatch) => {
+    dispatch({type: LOADING_UI});
+    axios.post('/scream', newScream)
+    .then(res => {
+        dispatch({type: STOP_LOADING_UI});
+        dispatch({
+            type: POST_SCREAM,
+            payload: res.data
+        });
+        dispatch({
+            type: CLEAR_ERRORS
+        })
+        dispatch({
+            type: SUBMITTED
+        })
+    })
+    .catch(err => {
+        dispatch({type: STOP_LOADING_UI});
+        dispatch({
+            type: SET_ERRORS,
+            payload: err.response.data
+        })
+    })
+    
+}
 
 // get all screams
 export const getScreams = () => (dispatch) => {
@@ -13,6 +51,7 @@ export const getScreams = () => (dispatch) => {
 
     axios.get('/screams')
     .then(res => {
+        // console.log(JSON.stringify(res.data));
         dispatch({
             type: SET_SCREAMS,
             payload: res.data
@@ -68,6 +107,30 @@ export const deleteScream = (screamId) => (dispatch) => {
         dispatch( { type: DELETE_SCREAM, payload: screamId } )
     })
     .catch(err => {
+        console.error(err);
+    })
+}
+
+export const clearErrors = () => dispatch => {
+    dispatch({type: CLEAR_ERRORS});
+}
+
+export const clearSubmit = () => dispatch => {
+    dispatch({type: CLEAR_SUBMIT});
+}
+
+export const getScream = (screamId) => dispatch => {
+    dispatch( {type: LOADING_UI } ); //display loading circle until data is fetched
+    axios.get(`/scream/${screamId}`)
+    .then(res => {
+        dispatch({
+            type: SET_SCREAM, //
+            payload: res.data
+        })
+        dispatch( {type: STOP_LOADING_UI} ); //remove loading circle
+    })
+    .catch(err => {
+        dispatch( {type: STOP_LOADING_UI} );
         console.error(err);
     })
 }

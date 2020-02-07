@@ -16,28 +16,48 @@ class Home extends Component {
         super(props);
         
         this.state = {
-            screams: null
+            screams: []
         }
     }
 
     componentDidMount() { //INITIAL FETCH
-        console.log('Calling componentDidMount')
+        console.log('Home componentDidMount()\n\n\n\n');
         this.props.getScreams()
+
+        //screams use id not screamId!!!!!!!
+    }
+
+    
+    /*
+    static getDerivedStateFromProps(changedProps, changedState) {
+        console.log('Home getDerivedStateFromProps()\n\n\n\n');
+
+        console.log(`changed props:\n${JSON.stringify(changedProps.data)}`)
+        console.log(`changed state:\n${JSON.stringify(changedState.screams)}`)
+        //if(changedProps.data.screams.length > changedState.screams.length) return {screams: changedProps.data.screams}
+        return null;
+    }
+    
+    shouldComponentUpdate(nextProps, nextState) {
+        
+        console.log('Home shouldComponentUpdate()\n\n\n\n');
+        if(Object.keys(nextProps.data.scream).length > 0) return false;
+        if((nextState.screams.length > 0) || nextProps.data.loading) {
+            console.log('New screams inbound or loading')
+            return true;
+        }
+        return false;
     }
 
     componentDidUpdate(prevProps, prevState) { //SUBSEQUENT FETCHES
-        console.log('Calling componentDidUpdate')
-        if(prevProps.data.screams !== this.props.data.screams)
-        {
-            console.log('Screams changed!')
-            // this.props.getScreams()
-            this.setState({screams:this.props.data.screams}); //will force re-render
-        }
+        console.log('Home componentDidUpdate()\n\n\n\n');
+        
     }
+    */
     
     render() {
         const { screams, loading } = this.props.data;
-        console.log('In render() of home: ' + screams.length);
+        // console.log('In render() of home: ' + screams.length);
 
         //when using an object as a BOOLEAN, it will be true if it's not null
         let recentScreamsMarkup = !loading ? (
@@ -45,7 +65,7 @@ class Home extends Component {
                 // console.log('SHOWING SCREAM ' + scream.id);
                 return <Scream 
                             scream={scream} 
-                            key={scream.id+(Math.round(Math.random()*10))} 
+                            key={scream.id} 
                             raised="true"
                         />
             })
@@ -68,11 +88,13 @@ class Home extends Component {
 
 Home.propTypes = {
     getScreams: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired,
+    data: PropTypes.object.isRequired
+    // screams: PropTypes.array.isRequired,
+    // loading: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = (state) => ({
-    data: state.data //gets the state from the dataReducer
+    data: state.data
 });
 
 const mapActionsToProps = {

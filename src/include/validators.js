@@ -44,3 +44,13 @@ export const validateLoginData = (data) => {
         valid: Object.keys(errors).length === 0 ? true : false
     }
 }
+
+export const validateScream = (data) => {
+    if(isEmpty(data)) return {
+        errors: 'Must not be empty',
+        valid: false
+    }
+    else return {
+        valid: true
+    }
+}

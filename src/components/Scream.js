@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 import IconButtonWrap from '../include/IconButtonWrap';
 import DeleteScream from './DeleteScream';
+import ScreamDialog from './ScreamDialog';
 
 // MUI IMPORT
 import Card from '@material-ui/core/Card';
@@ -41,9 +42,32 @@ const styles = {
     }
 }
 
+
+//getScreams() uses id
+//likes uses screamId
 class Scream extends Component {
+    constructor(props){
+        super(props)
+        // console.log('   Scream constructor(props)\n\n\n\n');
+    }
+
+    /*
+    componentDidMount() {
+        console.log('   Scream componentDidMount()\n\n\n\n');
+    }
+
+    componentWillUnmount() {
+        console.log('   Scream componentWillUnmount()\n\n\n\n');
+    }
+
+    componentDidUpdate() {
+        console.log('  Scream componentDidUpdate()\n\n\n\n');
+    }
+    */
+   
     likedScream = () => {
         //If the likes array is defined AND it contains the scream the user requesteed to like
+        // console.log(`Inside scream:\n${JSON.stringify(this.props.user.likes)}`)
         if(this.props.user.likes && this.props.user.likes.find(like => like.screamId === this.props.scream.id))
             return true; //the user already liked the scream so don't do anything
         else return false;
@@ -73,6 +97,8 @@ class Scream extends Component {
         } = this.props;
         */
        //TO ACCESS with userImage, screamId
+
+       
        const {
            classes,
            scream : {
@@ -94,6 +120,8 @@ class Scream extends Component {
                }
            }
        } = this.props;
+
+    //    console.log('IN SCREAM: ' + id)
 
        const authLikeIcon = this.likedScream() ? (
         <IconButtonWrap tip="Unlike" onClick={this.unlikeScream}>
@@ -142,6 +170,7 @@ class Scream extends Component {
                         {userHandle}
                     </Typography>
 
+                    {/*Trashcan icon for deleting the scream*/}
                     {deleteButton}
 
                     {/*The scream timestamp*/}
@@ -168,6 +197,11 @@ class Scream extends Component {
                     </IconButtonWrap>
 
                     <span>{commentCount} Comments</span>
+
+                    <ScreamDialog
+                        screamId={id}
+                        userHandle={userHandle}
+                    ></ScreamDialog>
 
                 </CardContent>
 

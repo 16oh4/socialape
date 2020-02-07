@@ -18,7 +18,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import AccountCircle from      '@material-ui/icons/AccountCircle';
 
 
-
 const styles = (theme) => ({
     ...theme.styles,
     button: {
@@ -79,6 +78,7 @@ class EditDetails extends Component {
 
     render() {
         const { classes } = this.props;
+
         return (
             <>
                 <IconButtonWrap 
