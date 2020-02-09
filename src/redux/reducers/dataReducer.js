@@ -39,6 +39,10 @@ export default (state=initialState, action) => {
         case UNLIKE_SCREAM:
             let index = state.screams.findIndex( scream => (scream.id === action.payload.screamId));
             state.screams[index].likeCount = action.payload.likeCount; //update the scream with the updated scream document from backend
+            
+            //update scream used in dialog also
+            
+            
             return {...state};
         case DELETE_SCREAM:
             let index2 = state.screams.findIndex( scream => (scream.id === action.payload));

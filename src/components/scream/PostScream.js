@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import IconButtonWrap from '../include/IconButtonWrap';
+import IconButtonWrap from '../../include/IconButtonWrap';
 // import { validateScream } from '../include/validators';
 
 // MUI
@@ -18,7 +18,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 // Redux
 import { connect } from 'react-redux';
-import { postScream, clearErrors, clearSubmit } from '../redux/actions/dataActions';
+import { postScream, clearErrors, clearSubmit } from '../../redux/actions/dataActions';
 
 const styles = (theme) => ({
     ...theme.styles,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import IconButtonWrap from '../include/IconButtonWrap';
-import PostScream from './PostScream';
+import IconButtonWrap from '../../include/IconButtonWrap';
+import PostScream from '../scream/PostScream';
 
 //MATERIAL UI
 import AppBar from '@material-ui/core/AppBar';

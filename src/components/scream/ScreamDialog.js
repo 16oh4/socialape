@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import IconButtonWrap from '../include/IconButtonWrap';
+import IconButtonWrap from '../../include/IconButtonWrap';
 import dayjs from 'dayjs';
 import {Link} from 'react-router-dom';
 
@@ -14,15 +14,37 @@ import Typography from '@material-ui/core/Typography';
 
 import CloseIcon from '@material-ui/icons/Close';
 import UnfoldMore from '@material-ui/icons/UnfoldMore';
+import ChatIcon from '@material-ui/icons/Chat'
 
 import { connect } from 'react-redux';
-import { getScream } from '../redux/actions/dataActions';
+import { getScream } from '../../redux/actions/dataActions';
+import LikeButton from './LikeButton';
 
 const styles = (theme) => ({
     ...theme.styles,
     invisibleSeparator: {
         border: 'none', //hr has border by default
         margin: 4,
+    },
+    profileImage: {
+        maxWidth: 200,
+        height: 200,
+        borderRadius: '50%', //for circle image
+        objectFit: 'cover' //so ratio is 1:1 and doesn't stretch it
+    },
+    dialogContent: {
+        padding: 20
+    },
+    closeButton: {
+        position: 'absolute',
+        left: '90%'
+    },
+    expandButton: {
+        left: '80%'
+    },
+    spinnerDiv: {
+        textAlign: 'center',
+        margin: '50 0 50 0',
     }
 })
 
@@ -31,7 +53,8 @@ class ScreamDialog extends Component {
         super(props);
         console.log('       Dialog constructor(props)\n\n\n\n');
         this.state = {
-            open: false
+            open: false,
+            scream: {}
         }
     }
 
@@ -44,16 +67,24 @@ class ScreamDialog extends Component {
         console.log('       Dialog componentWillUnmount()\n\n\n\n');
     }
 
+    
     static getDerivedStateFromProps(changedProps, changedState) {
         console.log('       Dialog getDerivedStateFromProps\n\n\n\n');
+        const { screams } = changedProps;
+
+        let index = screams.findIndex( scream => (scream.id === changedProps.screamId) );
+
+        return {scream: screams[index]};
+
 
         // const propsCopy = JSON.parse(JSON.stringify(changedProps));
         // delete propsCopy['classes'];
         // console.log(`Changed props:\n${JSON.stringify(propsCopy)}`);
         // console.log(`Changed state:\n${JSON.stringify(changedState)}`);
 
-        return null;
+        // return null;
     }
+    /*
 
     shouldComponentUpdate(nextProps, nextState) {
         console.log('       Dialog shouldComponentUpdate\n\n\n\n');
@@ -71,10 +102,12 @@ class ScreamDialog extends Component {
 
         return true;
     }
-
+    */
     componentDidUpdate() {
         console.log('       Dialog componentDidUpdate\n\n\n\n');
+        // this.props.getScream(this.props.screamId);
     }
+    
 
     handleClose = () => {
         this.setState({
@@ -86,31 +119,39 @@ class ScreamDialog extends Component {
         this.setState({
             open: true
         })
-        this.props.getScream(this.props.screamId);
+        // this.props.getScream(this.props.screamId);
     }
 
     
 
     render(){
         
+
+
         const { classes, 
-            // eslint-disable-next-line
-            scream: {screamId, body, createdAt, likeCount, commentCount, userImage, userHandle},
-            UI: { loading } 
+            // scream: {screamId, body, createdAt, likeCount, commentCount, userImage, userHandle},
+            UI: { loading },
         } = this.props;
 
-        // console.log(`   LOADING STATE: ${loadingScream}`);
-        // console.log('OPEN STATE: ' + this.state.open)
+        const { 
+            scream: {id, body, createdAt, likeCount, commentCount, userImage, userHandle},
+        } = this.state;
+
+        // console.log('Scream Dialog: ' + JSON.stringify(scream));
 
         const screamMarkup = (
             (
                 <Grid
                     container
+                    direction='row'
+                    alignContent='center'
                     spacing={2}
                 >
-                    <Grid item sm={5}>
+                    {/* User image */}
+                    <Grid item sm={5}> 
                         <img src={userImage} alt="Profile" className={classes.profileImage}/>
                     </Grid>
+
                     <Grid item sm={7}>
                         {/* User handle */}
                         <Typography
@@ -136,15 +177,25 @@ class ScreamDialog extends Component {
                         <Typography variant="body1">
                             {body}
                         </Typography>
+
+                        {/* Like button */}
+                        <LikeButton screamId={id} likeCount={likeCount}></LikeButton>
+
+                        {/* Comments button */}
+                        <IconButtonWrap tip="Comments">
+                            <ChatIcon color="primary"/>
+                        </IconButtonWrap>
+                        <span>{commentCount} Comments</span>
+                        
                     </Grid>
                 </Grid>
             )
         )
 
         const progress = (
-            <CircularProgress
-                size={200}
-            ></CircularProgress>
+            <div className={classes.spinnerDiv}>
+                <CircularProgress size={70} thickness={0.5}/>
+            </div>
         )
 
         const dialogMarkup = loading ? progress : screamMarkup;
@@ -192,16 +243,20 @@ class ScreamDialog extends Component {
 ScreamDialog.propTypes = {
     getScream: PropTypes.func.isRequired, //from the import
 
-    screamId: PropTypes.string.isRequired, //passed in from Scream.js parent
-    userHandle: PropTypes.string.isRequired,
+    screamId: PropTypes.string.isRequired,      //passed in from Scream.js parent
+    userHandle: PropTypes.string.isRequired,    //passed in from Scream.js parent
+    // likeCount: PropTypes.number.isRequired,
 
-    scream: PropTypes.object.isRequired, //from Redux store
-    UI: PropTypes.object.isRequired
+    // scream: PropTypes.object.isRequired,    //from Redux store
+    screams: PropTypes.array.isRequired,
+    UI: PropTypes.object.isRequired         //from Redux store
 }
 
 const mapStateToProps = state => ({
-    scream: state.data.scream,
-    UI: state.UI
+    // scream: state.data.scream,
+    screams: state.data.screams,
+    UI: state.UI,
+    likes: state.user.likes
 })
 
 const mapActionsToProps = {

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import IconButtonWrap from '../include/IconButtonWrap';
+import IconButtonWrap from '../../include/IconButtonWrap';
 
 // Redux stuff
 import { connect } from 'react-redux';
-import { editUserDetails } from '../redux/actions/userActions';
+import { editUserDetails } from '../../redux/actions/userActions';
 
 // MUI stuff
 import Button from '@material-ui/core/Button';
