@@ -31,6 +31,9 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 export const theme = createMuiTheme(myTheme);
 
+
+axios.defaults.baseURL = 'https://us-central1-socialape-f335b.cloudfunctions.net/api';
+
 //AUTHENTICATION ONLY RUNS ONCE
 const token = localStorage.FBIdToken;
 

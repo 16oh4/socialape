@@ -25,6 +25,7 @@ const styles = theme => ({
     ...theme.styles,
     titleTypo : {
         textDecoration: 'none',
+        marginRight: 20
     }
 })
 
@@ -34,6 +35,11 @@ class Navbar extends Component {
 
         const nonAuthMarkup = (
             <>
+            <Link to="/" className={classes.titleTypo}>
+                    <Typography variant="h6" to="/" color="secondary">
+                        S O C I A L - A P E
+                    </Typography>
+                </Link>
             <Button color="inherit" component={Link} to="/">Home</Button>
             <Button color="inherit" component={Link} to="/login">Login</Button>
             <Button color="inherit" component={Link} to="/signup">Signup</Button>
