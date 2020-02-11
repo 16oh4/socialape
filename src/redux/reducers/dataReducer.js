@@ -6,6 +6,7 @@ import {
     DELETE_SCREAM,
     POST_SCREAM,
     LOADING_DATA,
+    SUBMIT_COMMENT
     
 } from '../types';
 
@@ -41,7 +42,12 @@ export default (state=initialState, action) => {
             state.screams[index].likeCount = action.payload.likeCount; //update the scream with the updated scream document from backend
             
             //update scream used in dialog also
-            
+
+            // if the currently fetched scream dialog is the same as the one just liked,
+            // copy the data from the liked scream onto the scream dialog
+            if(state.scream.screamId === action.payload.screamId) {
+                state.scream.likeCount = action.payload.likeCount;
+            }
             
             return {...state};
         case DELETE_SCREAM:
@@ -56,8 +62,16 @@ export default (state=initialState, action) => {
                     action.payload, //put scream at the top because it's the newest one
                     ...state.screams
                 ]
-            }
-
+            };
+        case SUBMIT_COMMENT:
+            return {
+                ...state,
+                scream: {
+                    ...state.scream,
+                    //add the new comment to the top of the ScreamDialog scream object!!
+                    comments: [action.payload, ...state.scream.comments]
+                }
+            };
         default:
             return state;
     }

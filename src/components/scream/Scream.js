@@ -49,11 +49,11 @@ class Scream extends Component {
 
     constructor(props){
         super(props);
-        console.log('   Scream constructor(props)\n\n\n\n');
+        // console.log('   Scream constructor(props)\n\n\n\n');
     }
     
     componentDidMount() {
-        console.log('   Scream componentDidMount()\n\n\n\n');
+        // console.log('   Scream componentDidMount()\n\n\n\n');
     }
 
     /*
@@ -62,7 +62,7 @@ class Scream extends Component {
     }
     */
     componentDidUpdate() {
-        console.log('  Scream componentDidUpdate()\n\n\n\n');
+        // console.log('  Scream componentDidUpdate()\n\n\n\n');
     }
     
 
@@ -106,8 +106,6 @@ class Scream extends Component {
             }
            
        } = this.props;
-
-    //    console.log('IN SCREAM: ' + id)
 
        
 
@@ -170,6 +168,7 @@ class Scream extends Component {
                     <ScreamDialog
                         screamId={id}
                         userHandle={userHandle}
+                        openDialog={this.props.openDialog}
                         // likeCount={likeCount}
                         // scream={scream}
                     ></ScreamDialog>
@@ -186,6 +185,7 @@ Scream.propTypes = {
     credentials: PropTypes.object.isRequired,
     scream: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
+    openDialog: PropTypes.bool //not required, sometimes will happen
 }
 
 const mapStateToProps = state => ({

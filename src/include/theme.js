@@ -30,6 +30,15 @@ const styles = {
     progress: {
         position: 'absolute'
     },
+    invisibleSeparator: {
+        border: 'none', //hr has border by default
+        margin: 4,
+    },
+    visibleSeparator: {
+        width: '100%',
+        borderBottom: '1px solid rgb(0,0,0,0.1)',
+        marginBottom: '20px' //same as 20
+    }
 };
 
 const theme = {

@@ -27,12 +27,12 @@ class LikeButton extends Component {
     }
 
     componentDidUpdate(nextProps, nextState, snapshot) {
-        console.log('               LikeButton componentDidUpdate()');
+        // console.log('               LikeButton componentDidUpdate()');
     }
 
     render() {
 
-        console.log('               LikeButton render()')
+        // console.log('               LikeButton render()')
         const { authenticated } = this.props.user;
         const { likeCount } = this.props;
 

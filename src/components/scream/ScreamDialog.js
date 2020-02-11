@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import IconButtonWrap from '../../include/IconButtonWrap';
 import dayjs from 'dayjs';
+import Comments from './Comments';
+import CommentForm from './CommentForm';
 import {Link} from 'react-router-dom';
 
 // MUI
@@ -22,10 +24,7 @@ import LikeButton from './LikeButton';
 
 const styles = (theme) => ({
     ...theme.styles,
-    invisibleSeparator: {
-        border: 'none', //hr has border by default
-        margin: 4,
-    },
+    
     profileImage: {
         maxWidth: 200,
         height: 200,
@@ -51,30 +50,33 @@ const styles = (theme) => ({
 class ScreamDialog extends Component {
     constructor(props) {
         super(props);
-        console.log('       Dialog constructor(props)\n\n\n\n');
+        // console.log('       Dialog constructor(props)\n\n\n\n');
         this.state = {
             open: false,
+            oldPath: '',
+            newPath: '',
             scream: {}
         }
     }
 
     //MOUNTING LIFECYCLE
     componentDidMount(){
-        console.log('       Dialog componentDidMount()\n\n\n\n');
+        // console.log('       Dialog componentDidMount()\n\n\n\n');
+        if(this.props.openDialog) this.handleOpen();
     }
 
     componentWillUnmount(){
-        console.log('       Dialog componentWillUnmount()\n\n\n\n');
+        // console.log('       Dialog componentWillUnmount()\n\n\n\n');
     }
 
     
     static getDerivedStateFromProps(changedProps, changedState) {
-        console.log('       Dialog getDerivedStateFromProps\n\n\n\n');
-        const { screams } = changedProps;
+        // console.log('       Dialog getDerivedStateFromProps\n\n\n\n');
+        // const { screams } = changedProps;
 
-        let index = screams.findIndex( scream => (scream.id === changedProps.screamId) );
+        // let index = screams.findIndex( scream => (scream.id === changedProps.screamId) );
 
-        return {scream: screams[index]};
+        // return {scream: screams[index]};
 
 
         // const propsCopy = JSON.parse(JSON.stringify(changedProps));
@@ -82,7 +84,7 @@ class ScreamDialog extends Component {
         // console.log(`Changed props:\n${JSON.stringify(propsCopy)}`);
         // console.log(`Changed state:\n${JSON.stringify(changedState)}`);
 
-        // return null;
+        return null;
     }
     /*
 
@@ -104,22 +106,34 @@ class ScreamDialog extends Component {
     }
     */
     componentDidUpdate() {
-        console.log('       Dialog componentDidUpdate\n\n\n\n');
+        // console.log('       Dialog componentDidUpdate\n\n\n\n');
         // this.props.getScream(this.props.screamId);
     }
     
 
     handleClose = () => {
+        window.history.pushState(null, null, this.state.oldPath);
         this.setState({
-            open: false
+            open: false,
         })
     }
 
     handleOpen = () => {
+        let oldPath = window.location.pathname;
+
+        const { userHandle, screamId } = this.props;
+        const newPath = `/users/${userHandle}/scream/${screamId}`;
+
+        if(oldPath === newPath) oldPath = `/users/${userHandle}`
+
+        window.history.pushState(null, null, newPath);
+
         this.setState({
-            open: true
+            open: true,
+            oldPath,
+            newPath
         })
-        // this.props.getScream(this.props.screamId);
+        this.props.getScream(this.props.screamId);
     }
 
     
@@ -129,13 +143,13 @@ class ScreamDialog extends Component {
 
 
         const { classes, 
-            // scream: {screamId, body, createdAt, likeCount, commentCount, userImage, userHandle},
+            scream: {screamId, body, createdAt, likeCount, commentCount, userImage, userHandle, comments},
             UI: { loading },
         } = this.props;
 
-        const { 
-            scream: {id, body, createdAt, likeCount, commentCount, userImage, userHandle},
-        } = this.state;
+        // const { 
+        //     scream: {id, body, createdAt, likeCount, commentCount, userImage, userHandle, comments},
+        // } = this.state;
 
         // console.log('Scream Dialog: ' + JSON.stringify(scream));
 
@@ -179,15 +193,21 @@ class ScreamDialog extends Component {
                         </Typography>
 
                         {/* Like button */}
-                        <LikeButton screamId={id} likeCount={likeCount}></LikeButton>
+                        <LikeButton screamId={screamId} likeCount={likeCount}></LikeButton>
 
                         {/* Comments button */}
                         <IconButtonWrap tip="Comments">
                             <ChatIcon color="primary"/>
                         </IconButtonWrap>
-                        <span>{commentCount} Comments</span>
-                        
+                        <span>{commentCount} Comments</span>                        
                     </Grid>
+
+                    <hr className={classes.visibleSeparator}/>
+                    {/* To input a new comment */}
+                    <CommentForm screamId={screamId} />
+
+                    {/*Display comments  */}
+                    <Comments comments={comments}/>
                 </Grid>
             )
         )
@@ -245,16 +265,15 @@ ScreamDialog.propTypes = {
 
     screamId: PropTypes.string.isRequired,      //passed in from Scream.js parent
     userHandle: PropTypes.string.isRequired,    //passed in from Scream.js parent
-    // likeCount: PropTypes.number.isRequired,
 
-    // scream: PropTypes.object.isRequired,    //from Redux store
-    screams: PropTypes.array.isRequired,
+    scream: PropTypes.object.isRequired,    //from Redux store
+    // screams: PropTypes.array.isRequired,
     UI: PropTypes.object.isRequired         //from Redux store
 }
 
 const mapStateToProps = state => ({
-    // scream: state.data.scream,
-    screams: state.data.screams,
+    scream: state.data.scream,
+    // screams: state.data.screams,
     UI: state.UI,
     likes: state.user.likes
 })
