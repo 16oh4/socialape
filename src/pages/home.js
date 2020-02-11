@@ -7,8 +7,9 @@ import { getScreams } from '../redux/actions/dataActions';
 import Grid from '@material-ui/core/Grid'
 
 import Scream from '../components/scream/Scream';
+import ScreamSkeleton from '../include/ScreamSkeleton';
+
 import Profile from '../components/profile/Profile';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 class Home extends Component {
@@ -69,7 +70,7 @@ class Home extends Component {
                             raised="true"
                         />
             })
-        ) : (<CircularProgress size={250} />);
+        ) : (<ScreamSkeleton/>);
 
         
 

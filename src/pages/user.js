@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Scream from '../components/scream/Scream';
 import StaticProfile from '../components/profile/StaticProfile'
+import ProfileSkeleton from '../include/ProfileSkeleton';
 import Grid from '@material-ui/core/Grid';
 
 import { connect } from 'react-redux';
@@ -51,13 +52,15 @@ class user extends Component {
         const { screamIdParam } = this.state;
 
         const screamsMarkup = loading ? (
-            <p>Loading data...</p>
+            <ProfileSkeleton/>
         ) : (screams === null) ? (
             <p>No screams from this user.</p>
         ) : !screamIdParam ? (
             screams.map(scream => {
+                console.log(`SCREAM BEFORE:\n\n\n\n${JSON.stringify(scream)}`)
                 
-                scream.id = scream.screamId;
+                if(scream.id) scream.screamId = scream.id;
+                    else scream.id = scream.screamId;
                 console.log(`SCREAM:\n\n\n\n${JSON.stringify(scream)}`)
                 return <Scream key={`user_${scream.screamId}`} scream={scream}/>
             })

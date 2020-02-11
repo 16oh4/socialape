@@ -39,7 +39,8 @@ const styles = (theme) => ({
         left: '90%'
     },
     expandButton: {
-        left: '80%'
+        position: 'absolute',
+        left: '90%'
     },
     spinnerDiv: {
         textAlign: 'center',

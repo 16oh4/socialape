@@ -13,35 +13,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 
 const styles = (theme) => ({
-    paper: {
-        padding: 20
-    },
-    profile: {
-        '& .image-wrapper': {
-            textAlign: 'center', //aligns div to center, which then aligns image child to center
-            position: 'relative',
-        },
-        '& .profile-image': {
-            width: 200,
-            height: 200,
-            objectFit: 'cover',
-            maxWidth: '100%',
-            borderRadius: '50%',
-        },
-        '& .profile-details': {
-            textAlign: 'center',
-            '& span, svg': {
-                verticalAlign: 'middle'
-            },
-            '& a': {
-                color: theme.palette.primary.main
-            }
-        },
-        '& hr': {
-            border: 'none',
-            margin: '0 0 10px 0'
-        },
-    },
+    ...theme.styles
 });
 
 const StaticProfile = (props) => {
@@ -105,7 +77,7 @@ const StaticProfile = (props) => {
 
     let authMarkup = (
         <Paper className={classes.paper}>
-            <div className={classes.profile}>
+            <div className={classes.staticProfile}>
 
                 {/*Profile image */}
                 {profileImageMarkup}

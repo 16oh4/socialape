@@ -5,6 +5,7 @@ import {
     LOADING_UI, 
     SET_UNAUTHENTICATED, 
     LOADING_USER,
+    MARK_NOTIFICATIONS_READ,
 } from '../types';
 
 import axios from 'axios';
@@ -93,6 +94,17 @@ export const editUserDetails = (userDetails) => (dispatch) => {
     axios.post('/user', userDetails)
     .then(() => {
         dispatch(getUserData()); //updates the user data in the sidebar once it's fetched from the server
+    })
+    .catch(err => console.error(err));
+}
+
+export const markNotificationsRead = (notificationIds) => dispatch => {
+    axios.post(`/notifications`, notificationIds)
+    .then(res => {
+        // console.log(`MARKNOTIFS_REDUCER:\n\n${JSON.stringify(res)}`)
+        dispatch({
+            type: MARK_NOTIFICATIONS_READ
+        })
     })
     .catch(err => console.error(err));
 }

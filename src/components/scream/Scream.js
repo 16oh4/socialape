@@ -47,10 +47,10 @@ const styles = (theme) => ({
 //likes uses screamId
 class Scream extends Component {
 
-    constructor(props){
-        super(props);
-        // console.log('   Scream constructor(props)\n\n\n\n');
-    }
+    // constructor(props){
+    //     super(props);
+    //     // console.log('   Scream constructor(props)\n\n\n\n');
+    // }
     
     componentDidMount() {
         // console.log('   Scream componentDidMount()\n\n\n\n');

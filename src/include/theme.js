@@ -38,7 +38,78 @@ const styles = {
         width: '100%',
         borderBottom: '1px solid rgb(0,0,0,0.1)',
         marginBottom: '20px' //same as 20
-    }
+    },
+    paper: {
+        padding: 20
+    },
+    profile: {
+        '& .image-wrapper': {
+            textAlign: 'center', //aligns div to center, which then aligns image child to center
+            position: 'relative',
+            '& button': {
+                position: 'absolute',
+                top: '80%',
+                left: '70%',
+            }
+        },
+        '& .profile-image': {
+            width: 200,
+            height: 200,
+            objectFit: 'cover',
+            maxWidth: '100%',
+            borderRadius: '50%',
+        },
+        '& .profile-details': {
+            textAlign: 'center',
+            '& span, svg': {
+                verticalAlign: 'middle'
+            },
+            // '& a': {
+            //     color: '#009688'
+            // }
+        },
+        '& hr': {
+            border: 'none',
+            margin: '0 0 10px 0'
+        },
+        '& svg.button': {
+            '&:hover': {
+                cursor: 'pointer'
+            }
+        },
+    },
+    buttons: {
+        textAlign: 'center',
+        '& a': {
+            margin: '20px 10px'
+        }
+    },
+    staticProfile: {
+        '& .image-wrapper': {
+            textAlign: 'center', //aligns div to center, which then aligns image child to center
+            position: 'relative',
+        },
+        '& .profile-image': {
+            width: 200,
+            height: 200,
+            objectFit: 'cover',
+            maxWidth: '100%',
+            borderRadius: '50%',
+        },
+        '& .profile-details': {
+            textAlign: 'center',
+            '& span, svg': {
+                verticalAlign: 'middle'
+            },
+            // '& a': {
+            //     color: '#009688'
+            // }
+        },
+        '& hr': {
+            border: 'none',
+            margin: '0 0 10px 0'
+        },
+    },
 };
 
 const theme = {

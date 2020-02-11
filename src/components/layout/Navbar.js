@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 
 import IconButtonWrap from '../../include/IconButtonWrap';
 import PostScream from '../scream/PostScream';
@@ -11,19 +12,25 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import HomeIcon from '@material-ui/icons/Home';
-import NotifIcon from '@material-ui/icons/Notifications';
 
 //REACT-ROUTER-DOM
 import { Link } from 'react-router-dom';
+import Notifications from './Notifications';
+import Typography from '@material-ui/core/Typography';
 
 //import Link from 'react-router-dom/Link';
 //`require("react-router-dom").Link` instead of `require("react-router-dom/Link")`.
 
-
+const styles = theme => ({
+    ...theme.styles,
+    titleTypo : {
+        textDecoration: 'none',
+    }
+})
 
 class Navbar extends Component {
     render() {
-        const { auth } = this.props;
+        const { auth, classes } = this.props;
 
         const nonAuthMarkup = (
             <>
@@ -35,6 +42,11 @@ class Navbar extends Component {
 
         const authMarkup = (
             <>
+                <Link to="/" className={classes.titleTypo}>
+                    <Typography variant="h6" to="/">
+                        S O C I A L - A P E
+                    </Typography>
+                </Link>
                 {/*Icon to post new scream with. Opens dialog to post new scream */}
                 <PostScream/>
                 
@@ -46,9 +58,7 @@ class Navbar extends Component {
                 </Link>
 
                 {/*Shows the notifications */}
-                <IconButtonWrap tip="Notifications">
-                    <NotifIcon/>                
-                </IconButtonWrap>
+                <Notifications/>
             </>
         );
 
@@ -63,11 +73,12 @@ class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-    auth: PropTypes.bool.isRequired //must make sure the user is authenticated to render diff icons!
+    auth: PropTypes.bool.isRequired, //must make sure the user is authenticated to render diff icons!
+    classes: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({
     auth: state.user.authenticated
 });
 
-export default connect(mapStateToProps)(Navbar)
+export default connect(mapStateToProps)(withStyles(styles)(Navbar))

@@ -4,6 +4,7 @@ import { Link } from            'react-router-dom';
 import dayjs from               'dayjs';
 
 import EditDetails from './EditDetails';
+import ProfileSkeleton from '../../include/ProfileSkeleton';
 import IconButtonWrap from '../../include/IconButtonWrap';
 
 // Redux
@@ -26,56 +27,7 @@ import CalendarToday from   '@material-ui/icons/CalendarToday';
 import KeyboardReturn from  '@material-ui/icons/KeyboardReturn';
 
 const styles = (theme) => ({
-    paper: {
-        padding: 20
-    },
-    profile: {
-        '& .image-wrapper': {
-            textAlign: 'center', //aligns div to center, which then aligns image child to center
-            position: 'relative',
-            '& button': {
-                position: 'absolute',
-                top: '80%',
-                left: '70%',
-            }
-        },
-        '& .profile-image': {
-            width: 200,
-            height: 200,
-            objectFit: 'cover',
-            maxWidth: '100%',
-            borderRadius: '50%',
-        },
-        '& .profile-details': {
-            textAlign: 'center',
-            '& span, svg': {
-                verticalAlign: 'middle'
-            },
-            '& a': {
-                color: theme.palette.primary.main
-            }
-        },
-        // '& .profile-icons': {
-        //     textAlign: 'left',
-            
-
-        // },
-        '& hr': {
-            border: 'none',
-            margin: '0 0 10px 0'
-        },
-        '& svg.button': {
-            '&:hover': {
-                cursor: 'pointer'
-            }
-        },
-    },
-    buttons: {
-        textAlign: 'center',
-        '& a': {
-            margin: '20px 10px'
-        }
-    }
+    ...theme.styles
 });
 
 class Profile extends Component {
@@ -240,11 +192,11 @@ class Profile extends Component {
             </Paper>
         );
 
-        let loadingMarkup = loading && (
-            <CircularProgress size={50} className={classes.progress}/>
-        );
+        // let loadingMarkup = loading && (
+        //     <CircularProgress size={50} className={classes.progress}/>
+        // );
 
-        let profileMarkup = loading ? loadingMarkup : (authenticated ? authMarkup : nonAuthMarkup);
+        let profileMarkup = loading ? <ProfileSkeleton/> : (authenticated ? authMarkup : nonAuthMarkup);
 
         return (
             profileMarkup
