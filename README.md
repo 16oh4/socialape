@@ -1,5 +1,7 @@
 Live demo: https://socialape-f335b.firebaseapp.com/
 
+![alt text](https://raw.githubusercontent.com/16oh4/socialape/master/home.PNG)
+
 ## Technologies Used
 Google Firebase PaaS, Axios, Express.js, React.js, Material-UI, Redux.
 
